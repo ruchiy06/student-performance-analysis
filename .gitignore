@@ -1,0 +1,44 @@
+﻿# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints/
+
+# Environment / secrets
+.env
+.env.local
+*.env
+
+# Log files
+*.log
+logs/
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs
+.idea/
+
+# Node (if any tooling is added later)
+node_modules/
