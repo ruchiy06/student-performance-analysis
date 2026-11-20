@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Wholesale Customer Data</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Wholesale Customer Analysis | Spending &amp; Segmentation</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7507,9 +7507,422 @@ a.anchor-link {
     white-space: normal;
   }
 </style>
-<!-- End of mermaid configuration --></head>
+<!-- End of mermaid configuration -->
+<style>
+  :root {
+    color-scheme: light;
+    --dashboard-ink: #172b4d;
+    --dashboard-muted: #62748b;
+    --dashboard-blue: #3974b8;
+    --dashboard-border: #e3eaf2;
+    --dashboard-surface: #ffffff;
+    --dashboard-background: #f4f7fb;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--dashboard-background);
+  }
+
+  body.jp-Notebook {
+    margin: 0;
+    background: var(--dashboard-background);
+    color: #34445a;
+    font-family: Inter, "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body.jp-Notebook > main {
+    box-sizing: border-box;
+    width: min(100% - 64px, 1320px);
+    margin: 0 auto;
+    padding: 48px 0 80px;
+  }
+
+  .dashboard-header {
+    margin-bottom: 28px;
+    overflow: hidden;
+    border: 1px solid #dfe8f3;
+    border-radius: 12px;
+    background: linear-gradient(115deg, #fff 0%, #f8fbff 100%);
+    box-shadow: 0 5px 18px rgba(27, 55, 89, 0.045);
+  }
+
+  .dashboard-overview {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.85fr);
+    gap: 30px;
+    align-items: center;
+    padding: 28px 32px 22px;
+  }
+
+  .dashboard-eyebrow {
+    margin: 0 0 8px;
+    color: var(--dashboard-blue);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .dashboard-title {
+    margin: 0;
+    color: var(--dashboard-ink);
+    font-size: clamp(26px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+  }
+
+  .dashboard-introduction {
+    max-width: 620px;
+    margin: 12px 0 0;
+    color: var(--dashboard-muted);
+    font-size: 15px;
+  }
+
+  .dashboard-featured-visual {
+    min-width: 0;
+    margin: 0;
+    padding: 14px;
+    border: 1px solid var(--dashboard-border);
+    border-radius: 9px;
+    background: #fff;
+  }
+
+  .dashboard-featured-visual figcaption {
+    margin: 0 0 8px;
+    color: var(--dashboard-ink);
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  .dashboard-featured-chart img {
+    display: block;
+    width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+  }
+
+  .dashboard-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 32px 18px;
+  }
+
+  .dashboard-nav a {
+    padding: 6px 11px;
+    border: 1px solid var(--dashboard-border);
+    border-radius: 999px;
+    background: #fff;
+    color: #46617f;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 140ms ease, border-color 140ms ease;
+  }
+
+  .dashboard-nav a:hover,
+  .dashboard-nav a:focus-visible {
+    border-color: #b7cee7;
+    background: #edf5fd;
+    color: #24598f;
+  }
+
+  .dashboard-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    padding: 0 32px 26px;
+  }
+
+  .dashboard-kpi {
+    min-width: 0;
+    padding: 13px 15px;
+    border: 1px solid var(--dashboard-border);
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .dashboard-kpi strong,
+  .dashboard-kpi span {
+    display: block;
+  }
+
+  .dashboard-kpi strong {
+    color: var(--dashboard-ink);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  .dashboard-kpi span {
+    margin-top: 4px;
+    color: var(--dashboard-muted);
+    font-size: 11px;
+  }
+
+  .jp-CodeCell > .jp-Cell-inputWrapper,
+  .jp-CodeCell .jp-RenderedText[data-mime-type="application/vnd.jupyter.stderr"],
+  .jp-CodeCell .jp-OutputPrompt {
+    display: none !important;
+  }
+
+  .jp-CodeCell.jp-mod-noOutputs {
+    display: none !important;
+  }
+
+  .dashboard-technical-output {
+    display: none !important;
+  }
+
+  .jp-Notebook-cell {
+    box-sizing: border-box;
+    margin: 0 0 16px;
+    border: 1px solid var(--dashboard-border);
+    border-radius: 10px;
+    background: var(--dashboard-surface);
+    box-shadow: 0 2px 8px rgba(27, 55, 89, 0.025);
+  }
+
+  .jp-MarkdownCell {
+    padding: 24px 30px;
+  }
+
+  .jp-CodeCell {
+    overflow: hidden;
+  }
+
+  .jp-InputArea {
+    padding: 14px 18px;
+    background: #f8fafd;
+  }
+
+  .jp-InputArea-prompt,
+  .jp-OutputArea-prompt {
+    color: #8796a9;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 11px;
+  }
+
+  .jp-InputArea-editor,
+  .jp-OutputArea {
+    min-width: 0;
+  }
+
+  .jp-InputArea-editor pre,
+  .jp-RenderedHTMLCommon pre {
+    overflow-x: auto;
+    border-radius: 6px;
+  }
+
+  .jp-OutputArea {
+    padding: 16px 20px;
+  }
+
+  .jp-RenderedHTMLCommon {
+    overflow-x: auto;
+    color: #34445a;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .jp-RenderedHTMLCommon h1,
+  .jp-RenderedHTMLCommon h2,
+  .jp-RenderedHTMLCommon h3,
+  .jp-RenderedHTMLCommon h4,
+  .jp-RenderedHTMLCommon h5,
+  .jp-RenderedHTMLCommon h6 {
+    color: var(--dashboard-ink);
+    font-family: inherit;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.3;
+  }
+
+  .jp-RenderedHTMLCommon h1 {
+    font-size: clamp(26px, 3vw, 36px);
+  }
+
+  .jp-RenderedHTMLCommon h2 {
+    margin-top: 0.15em;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--dashboard-border);
+    font-size: clamp(21px, 2.2vw, 27px);
+  }
+
+  .jp-RenderedHTMLCommon h3 {
+    font-size: 19px;
+  }
+
+  .jp-RenderedHTMLCommon p {
+    margin: 0.75em 0;
+  }
+
+  .jp-RenderedHTMLCommon a {
+    color: var(--dashboard-blue);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .jp-RenderedHTMLCommon a:hover {
+    color: #24598f;
+  }
+
+  .jp-RenderedHTMLCommon img,
+  .jp-RenderedImage img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 8px auto;
+    border-radius: 6px;
+  }
+
+  .jp-RenderedHTMLCommon table.dataframe {
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+    margin: 12px 0;
+    border: 1px solid var(--dashboard-border);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 7px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+
+  .jp-RenderedHTMLCommon table.dataframe th,
+  .jp-RenderedHTMLCommon table.dataframe td {
+    padding: 8px 11px;
+    border: 0;
+    border-bottom: 1px solid #edf1f6;
+    border-right: 1px solid #edf1f6;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .jp-RenderedHTMLCommon table.dataframe thead th {
+    background: #f1f5fa;
+    color: var(--dashboard-ink);
+    font-weight: 650;
+  }
+
+  .jp-RenderedHTMLCommon table.dataframe tbody tr:nth-child(even) {
+    background: #f9fbfd;
+  }
+
+  .jp-RenderedHTMLCommon table.dataframe tbody tr:last-child th,
+  .jp-RenderedHTMLCommon table.dataframe tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .jp-RenderedHTMLCommon table.dataframe th:last-child,
+  .jp-RenderedHTMLCommon table.dataframe td:last-child {
+    border-right: 0;
+  }
+
+  .jp-RenderedImage,
+  .jp-RenderedHTMLCommon {
+    max-width: 100%;
+  }
+
+  @media (max-width: 700px) {
+    body.jp-Notebook > main {
+      width: min(100% - 28px, 1320px);
+      padding: 20px 0 48px;
+    }
+
+    .dashboard-header {
+      margin-bottom: 18px;
+    }
+
+    .dashboard-overview {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      padding: 22px 20px 16px;
+    }
+
+    .dashboard-nav {
+      padding: 0 20px 16px;
+    }
+
+    .dashboard-kpis {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 0 20px 20px;
+    }
+
+    .jp-MarkdownCell {
+      padding: 19px 18px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dashboard-nav a {
+        transition: none;
+      }
+    }
+
+    .jp-OutputArea {
+      padding: 12px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  @media print {
+    html,
+    body.jp-Notebook {
+      background: #fff;
+    }
+
+    body.jp-Notebook > main {
+      width: 100%;
+      padding: 0;
+    }
+
+    .jp-Notebook-cell {
+      break-inside: avoid;
+      box-shadow: none;
+    }
+  }
+</style></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
-<main><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=07737aad-0cd6-4e33-b0cb-e2d21bc84fd9">
+<main>
+<header class="dashboard-header" id="overview">
+  <div class="dashboard-overview">
+    <div>
+      <p class="dashboard-eyebrow">Wholesale Customer Analysis</p>
+      <h1 class="dashboard-title">Customer spending &amp; segmentation</h1>
+      <p class="dashboard-introduction">Explore spending patterns across wholesale customers, compare clustering approaches, and review the resulting customer segments.</p>
+    </div>
+    <figure class="dashboard-featured-visual">
+      <figcaption>Customer spending distributions</figcaption>
+      <div class="dashboard-featured-chart"></div>
+    </figure>
+  </div>
+  <nav class="dashboard-nav" aria-label="Report sections">
+    <a href="#data-preparation">Data preparation</a>
+    <a href="#model-selection">Model comparison</a>
+    <a href="#customer-segments">Customer segments</a>
+    <a href="#external-validation">External validation</a>
+    <a href="#anomalies">Anomalies</a>
+  </nav>
+  <div class="dashboard-kpis" aria-label="Analysis summary">
+    <div class="dashboard-kpi"><strong>440</strong><span>Customers analyzed</span></div>
+    <div class="dashboard-kpi"><strong>8</strong><span>Dataset features</span></div>
+    <div class="dashboard-kpi"><strong>4</strong><span>Clustering methods</span></div>
+    <div class="dashboard-kpi"><strong>0.2903</strong><span>Best silhouette · K-Means</span></div>
+  </div>
+</header>
+<div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=07737aad-0cd6-4e33-b0cb-e2d21bc84fd9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7656,7 +8069,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=07d616d0-8cdb-4dda-b905-ae37611cb5a7">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=07d616d0-8cdb-4dda-b905-ae37611cb5a7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7682,7 +8095,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=1fcfedd3-eeb3-40f2-ad0b-b0c4e1dff212">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=1fcfedd3-eeb3-40f2-ad0b-b0c4e1dff212">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7710,7 +8123,7 @@ a.anchor-link {
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7f7a73bc-0dca-4e37-88d2-83ce40102122">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=7f7a73bc-0dca-4e37-88d2-83ce40102122">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7930,7 +8343,7 @@ dtype: int64</pre>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=aa276fc7-6d9f-4aae-af24-20b7efa2a7a3">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=aa276fc7-6d9f-4aae-af24-20b7efa2a7a3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8007,7 +8420,7 @@ dtype: int64</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2>Step 4 Tranform the Sales Data</h2>
+<h2 id="data-preparation">Step 4 Tranform the Sales Data</h2>
 </div>
 </div>
 </div>
@@ -8215,7 +8628,7 @@ dtype: int64</pre>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=359b75df-3137-491e-923c-7192d7c767a1">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=359b75df-3137-491e-923c-7192d7c767a1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8446,7 +8859,7 @@ C:\Users\priti\anaconda3\Lib\site-packages\sklearn\cluster\_kmeans.py:1429: User
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2>Calculate the Silhouette Scores</h2>
+<h2 id="model-selection">Calculate the Silhouette Scores</h2>
 </div>
 </div>
 </div>
@@ -8583,7 +8996,7 @@ K = 10: Silhouette Score = 0.1905
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=e2a42db6-5b27-422d-a464-55759d81e5a3">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=e2a42db6-5b27-422d-a464-55759d81e5a3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8621,7 +9034,7 @@ K = 10: Silhouette Score = 0.1905
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=8a693dfa-d561-4129-a933-d2eaf369487e">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=8a693dfa-d561-4129-a933-d2eaf369487e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8654,7 +9067,7 @@ K = 10: Silhouette Score = 0.1905
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=ca1e6691-9b17-435a-aec5-564529d48fd6">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=ca1e6691-9b17-435a-aec5-564529d48fd6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8695,7 +9108,7 @@ K = 10: Silhouette Score = 0.1905
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a7f2379d-c922-4f01-ab2a-6dc1aa9eae16">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=a7f2379d-c922-4f01-ab2a-6dc1aa9eae16">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9280,7 +9693,7 @@ Unlike the other methods, DBSCAN did not produce a valid clustering solution wit
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=2b41cb3f-e78b-4bd3-8b6a-f05d94f34df6">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=2b41cb3f-e78b-4bd3-8b6a-f05d94f34df6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9309,7 +9722,7 @@ Name: count, dtype: int64</pre>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=67ae25fb-d165-4ee6-8779-5a90b2a4497e">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell dashboard-technical-output" id="cell-id=67ae25fb-d165-4ee6-8779-5a90b2a4497e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9345,7 +9758,7 @@ Name: proportion, dtype: float64</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2>Cluster 0 – Fresh Food Focused Customers</h2>
+<h2 id="customer-segments">Cluster 0 – Fresh Food Focused Customers</h2>
 </div>
 </div>
 </div>
@@ -9555,7 +9968,7 @@ Name: proportion, dtype: float64</pre>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2>External Validation Analysis</h2>
+<h2 id="external-validation">External Validation Analysis</h2>
 </div>
 </div>
 </div>
@@ -9602,7 +10015,7 @@ The Adjusted Rand Index (ARI) between the K-Means cluster assignments and the kn
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2>Detecting Anomalies</h2>
+<h2 id="anomalies">Detecting Anomalies</h2>
 </div>
 </div>
 </div>
@@ -9780,5 +10193,18 @@ The Adjusted Rand Index (ARI) between the K-Means cluster assignments and the kn
 </div>
 </div>
 </main>
+<script>
+  (function () {
+    const featuredChart = document.querySelector(".dashboard-featured-chart");
+    const sourceChart = document.querySelector(".jp-RenderedImage img");
+    if (!featuredChart || !sourceChart) {
+      throw new Error("The featured customer spending chart could not be found.");
+    }
+
+    const chart = sourceChart.cloneNode(true);
+    chart.alt = "Customer spending distribution plots";
+    featuredChart.appendChild(chart);
+  })();
+</script>
 </body>
 </html>
